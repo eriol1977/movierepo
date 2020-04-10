@@ -57,6 +57,9 @@ public class SearchFileLibrary {
 						System.out.println("Invalid genre");
 					else
 						System.out.println(library.print(library.getMoviesByGenre(g)));
+				} else if (line.trim().toLowerCase().startsWith("country")) {
+					final String country = line.replace("country", "").trim();
+					System.out.println(library.print(library.getMoviesByCountry(country)));
 				}
 				System.out.println("----------------------------------------------");
 			}

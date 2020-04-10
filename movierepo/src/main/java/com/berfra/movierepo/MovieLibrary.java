@@ -76,6 +76,10 @@ public class MovieLibrary {
 		return this.movies.stream().filter(m -> m.isOfGenre(genre)).collect(Collectors.toSet());
 	}
 	
+	public Set<Movie> getMoviesByCountry(final String country) {
+		return this.movies.stream().filter(m -> m.isFromCountry(country)).collect(Collectors.toSet());
+	}
+	
 	public void saveMoviesToFile() throws MovieSaveException {
 		final FileMovieSaver saver = new FileMovieSaver();
 		for (final Movie movie : this.movies)

@@ -4,13 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import com.berfra.movierepo.FileMovieDatasource;
 import com.berfra.movierepo.FileMovieSaver;
 import com.berfra.movierepo.OMDBMovieDatasource;
+import com.berfra.movierepo.test.util.TestUtils;
 
 class TestMovieDatasource {
 
@@ -30,27 +25,27 @@ class TestMovieDatasource {
 			FileMovieSaver.TEST_PATH_BY_TITLE);
 
 	@BeforeEach
-	public void before(){
-		deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_ID),false);
-		deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_TITLE),false);
+	public void before() {
+		TestUtils.deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_ID), false);
+		TestUtils.deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_TITLE), false);
 	}
-	
+
 	@AfterEach
-	public void after(){
-		deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_ID),false);
-		deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_TITLE),false);
+	public void after() {
+		TestUtils.deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_ID), false);
+		TestUtils.deleteDirectory(new File(FileMovieSaver.TEST_PATH_BY_TITLE), false);
 	}
-	
+
 	@Test
 	void testLoadMovieTextById() throws Exception {
 		final String movieText = ds.loadMovieTextById("tt0083658");
-		assertEquals(getBladeRunnerJson(), movieText);
+		assertEquals(TestUtils.getBladeRunnerJson(), movieText);
 	}
 
 	@Test
 	void testLoadMovieIdsByTitle() throws Exception {
 		List<String> ids = ds.loadMovieIdsByTitle("pluto");
-		List<String> expectedIds = getPlutoSearchIds();
+		List<String> expectedIds = TestUtils.getPlutoSearchIds();
 		assertNotNull(ids);
 		assertEquals(expectedIds.size(), ids.size());
 		Set<String> intersection = ids.stream().distinct().filter(expectedIds::contains).collect(Collectors.toSet()); // intersection
@@ -63,7 +58,7 @@ class TestMovieDatasource {
 	void testLoadFileMovieTextById() throws Exception {
 		final String expectedText = "HELLO, IT'S A ME, MARIO!";
 		final String movieId = "tt123456";
-		writeStringToFile(expectedText, FileMovieSaver.TEST_PATH_BY_ID, movieId + ".json");
+		TestUtils.writeStringToFile(expectedText, FileMovieSaver.TEST_PATH_BY_ID, movieId + ".json");
 
 		assertEquals(expectedText, fileDs.loadMovieTextById(movieId));
 	}
@@ -71,13 +66,13 @@ class TestMovieDatasource {
 	@Test
 	void testLoadFileMovieIdsByTitle() throws Exception {
 		final String title = "Blade Runner";
-		writeStringToFile("AAA", FileMovieSaver.TEST_PATH_BY_TITLE, "Blade Runner###001.json");
-		writeStringToFile("BBB", FileMovieSaver.TEST_PATH_BY_TITLE, "Pippo Franco###002.json");
-		writeStringToFile("CCC", FileMovieSaver.TEST_PATH_BY_TITLE, "I Love Blade Runner###003.json");
-		writeStringToFile("DDD", FileMovieSaver.TEST_PATH_BY_TITLE, "blade runner bel film###004.json");
-		writeStringToFile("EEE", FileMovieSaver.TEST_PATH_BY_TITLE, "Blade Qualcosa Runner###005.json");
-		writeStringToFile("FFF", FileMovieSaver.TEST_PATH_BY_TITLE,
-				"Adoriamo tutti blade runner e il seguito###006.json");
+		TestUtils.writeStringToFile("AAA", FileMovieSaver.TEST_PATH_BY_TITLE, "Blade_Runner###001.json");
+		TestUtils.writeStringToFile("BBB", FileMovieSaver.TEST_PATH_BY_TITLE, "Pippo_Franco###002.json");
+		TestUtils.writeStringToFile("CCC", FileMovieSaver.TEST_PATH_BY_TITLE, "I_Love_Blade_Runner###003.json");
+		TestUtils.writeStringToFile("DDD", FileMovieSaver.TEST_PATH_BY_TITLE, "blade_runner_bel_film###004.json");
+		TestUtils.writeStringToFile("EEE", FileMovieSaver.TEST_PATH_BY_TITLE, "Blade_Qualcosa_Runner###005.json");
+		TestUtils.writeStringToFile("FFF", FileMovieSaver.TEST_PATH_BY_TITLE,
+				"Adoriamo_tutti_blade_runner_e_il_seguito###006.json");
 
 		List<String> ids = fileDs.loadMovieIdsByTitle(title);
 		assertNotNull(ids);
@@ -88,29 +83,4 @@ class TestMovieDatasource {
 		assertTrue(ids.contains("006"));
 	}
 
-	private String getBladeRunnerJson() throws IOException {
-		return new String(Files.readAllBytes(Paths.get("src/test/resources/bladeRunnerOneLine.json")));
-	}
-
-	private List<String> getPlutoSearchIds() throws IOException {
-		final String stringIds = new String(Files.readAllBytes(Paths.get("src/test/resources/plutoIds.txt")));
-		return Arrays.asList(stringIds.split(","));
-	}
-
-	private void writeStringToFile(final String content, final String path, final String filename) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(path + filename));
-		writer.write(content);
-		writer.close();
-	}
-
-	private void deleteDirectory(File directoryToBeDeleted, boolean alsoDeleteDir) {
-		File[] allContents = directoryToBeDeleted.listFiles();
-		if (allContents != null) {
-			for (File file : allContents) {
-				deleteDirectory(file, true);
-			}
-		}
-		if (alsoDeleteDir)
-			directoryToBeDeleted.delete();
-	}
 }

@@ -111,6 +111,10 @@ public class Movie {
 		return this.genres.contains(genre);
 	}
 	
+	public boolean isFromCountry(final String country) {
+		return this.country.toLowerCase().contains(country.toLowerCase());
+	}
+	
 	@Override
 	public String toString() {
 		return "Movie [id=" + id + ", title=" + title + ", year=" + year + ", runtime=" + runtime + ", director="

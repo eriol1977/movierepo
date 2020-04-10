@@ -34,7 +34,8 @@ public class FileMovieDatasource implements IMovieDatasource {
 		// makes a stream of all the files in the informed path
 		try (Stream<Path> walk = Files.walk(Paths.get(pathByTitle))) {
 
-			ids = walk.map(x -> x.toString()) // maps every file to its filename
+			ids = walk.filter(Files::isRegularFile)
+					.map(x -> x.toString()) // maps every file to its filename
 					.filter(f -> f.toLowerCase().contains(validTitle.toLowerCase())) // considers only the filenames containing the title
 					.map(name -> name.split("###")[1].replace(".json", "")) // maps every filename to the id part (i.e.: "Blade Runner###tt0083658.json" --> "tt0083658")
 					.collect(Collectors.toList()); // collects the result into a List<String>
