@@ -1,0 +1,8 @@
+-- implementare altre funzioni di ricerca nella library?
+
+-- fare TestHelper con funzioni di uso comune, tipo per scrivere o leggere i file
+
+-- configurare GitHub (prima di tutto cercare come config gitignore per progetto Maven!)
+
+- MongoDB: recuperare dati accesso, se ci sono; è possibile usarlo online?; studiare megli come funziona e trovare library Java per scriverci dentro
+- scrivere semplice interfaccia con classi Java con "main" per scrivere/leggere dati da DB nella console
