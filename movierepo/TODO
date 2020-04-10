@@ -1,6 +1,2 @@
--- implementare altre funzioni di ricerca nella library?
-
--- fare TestHelper con funzioni di uso comune, tipo per scrivere o leggere i file
-
-- MongoDB: recuperare dati accesso, se ci sono; è possibile usarlo online?; studiare megli come funziona e trovare library Java per scriverci dentro
++- MongoDB: recuperare dati accesso, se ci sono; è possibile usarlo online?; studiare megli come funziona e trovare library Java per scriverci dentro
 - scrivere semplice interfaccia con classi Java con "main" per scrivere/leggere dati da DB nella console

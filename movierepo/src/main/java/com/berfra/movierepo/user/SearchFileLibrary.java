@@ -35,10 +35,13 @@ public class SearchFileLibrary {
 				} else if (line.trim().toLowerCase().startsWith("actor")) {
 					final String actor = line.replace("actor", "").trim();
 					System.out.println(library.print(library.getMoviesWithActor(actor)));
-				} else if (line.trim().toLowerCase().startsWith("rating")) {
-					final int rating = Integer.valueOf(line.replace("rating", "").trim()).intValue();
-					System.out.println(library.print(library.getMoviesWithAvgRatingGreaterThan(rating)));
-				} else if (line.trim().toLowerCase().startsWith("id")) {
+				} else if (line.trim().toLowerCase().startsWith("rating >")) {
+					final int rating = Integer.valueOf(line.replace("rating >", "").trim()).intValue();
+					System.out.println(library.print(library.getMoviesByAverageRating(rating,true)));
+				} else if (line.trim().toLowerCase().startsWith("rating <")) {
+					final int rating = Integer.valueOf(line.replace("rating <", "").trim()).intValue();
+					System.out.println(library.print(library.getMoviesByAverageRating(rating,false)));
+				}else if (line.trim().toLowerCase().startsWith("id")) {
 					final String id = line.replace("id", "").trim();
 					System.out.println(library.printDetail(library.getMovieById(id)));
 				} else if (line.trim().toLowerCase().startsWith("title")) {

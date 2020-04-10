@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Movie {
 
 	public final static Movie EMPTY = new Movie("-1", "Movie not found", "", 0, "", "", "");
-	
+
 	private final String id;
 	private final String title;
 	private final String year;
@@ -22,7 +22,8 @@ public class Movie {
 	private final List<Actor> actors;
 	private final List<Rating> ratings;
 
-	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES) // these annotations are necessary to deserialize an immutable object with Jackson
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES) // these annotations are necessary to deserialize an immutable
+														// object with Jackson
 	public Movie(@JsonProperty("id") String id, @JsonProperty("title") String title, @JsonProperty("year") String year,
 			@JsonProperty("runtime") int runtime, @JsonProperty("director") String director,
 			@JsonProperty("plot") String plot, @JsonProperty("country") String country) {
@@ -98,34 +99,43 @@ public class Movie {
 	public boolean couldBe(final String title) {
 		return this.title.toLowerCase().contains(title.toLowerCase());
 	}
-	
+
 	public boolean directorCouldBe(final String dir) {
 		return this.director.toLowerCase().contains(dir.toLowerCase());
 	}
-	
+
 	public boolean plotContainsPhrase(final String phrase) {
 		return this.plot.toLowerCase().contains(phrase.toLowerCase());
 	}
-	
+
 	public boolean isOfGenre(final Genre genre) {
 		return this.genres.contains(genre);
 	}
-	
+
 	public boolean isFromCountry(final String country) {
 		return this.country.toLowerCase().contains(country.toLowerCase());
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Movie [id=" + id + ", title=" + title + ", year=" + year + ", runtime=" + runtime + ", director="
-				+ director + ", plot=" + plot + ", country=" + country + ", genres=" + genres + ", actors=" + actors
-				+ ", ratings=" + ratings + "]";
+		final StringBuilder sb = new StringBuilder();
+		sb.append(title).append(" (").append(year).append(") {").append(id).append("}\n");
+		sb.append("Directed by: ").append(director).append("\n");
+		sb.append("Starring: ").append(actors).append("\n");
+		sb.append("Genre: ").append(genres).append("\n");
+		sb.append("Summary: ").append(plot).append("\n");
+		sb.append("Runtime: ").append(runtime).append("m\n");
+		sb.append("Country: ").append(country).append("\n");
+		sb.append("Ratings: ").append(ratings).append("\n");
+		sb.append("Average rating: ").append(getAverageRating()).append("/100\n");
+		return sb.toString().replace("[", "").replace("]", "");
 	}
 
-	public double getAverageRating() {
+	public int getAverageRating() {
 		if (this.ratings == null || this.ratings.size() == 0)
 			return 0;
-		return this.ratings.stream().mapToInt(rating -> rating.getPercRating()).average().getAsDouble();
+		return Double.valueOf(this.ratings.stream().mapToInt(rating -> rating.getPercRating()).average().getAsDouble())
+				.intValue();
 	}
 
 }

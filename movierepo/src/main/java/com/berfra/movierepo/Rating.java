@@ -29,7 +29,7 @@ public class Rating {
 
 	@Override
 	public String toString() {
-		return "Rating [source=" + source + ", rating=" + rating + "]";
+		return source + ": " + getPercRating() + "/100";
 	}
 	
 }

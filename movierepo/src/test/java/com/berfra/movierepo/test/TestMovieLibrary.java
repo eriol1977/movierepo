@@ -82,7 +82,7 @@ class TestMovieLibrary {
 
 	@Test
 	void testMoviesWithAvgRatingGreaterThan80() throws Exception {
-		Set<Movie> movies = library.getMoviesWithAvgRatingGreaterThan(80);
+		Set<Movie> movies = library.getMoviesByAverageRating(80, true);
 		assertEquals(1, movies.size());
 		List<String> ids = movies.stream().map(m -> m.getId()).collect(Collectors.toList());
 		assertTrue(ids.contains("001"));
@@ -92,7 +92,7 @@ class TestMovieLibrary {
 	
 	@Test
 	void testMoviesWithAvgRatingGreaterThan70() throws Exception {
-		Set<Movie> movies = library.getMoviesWithAvgRatingGreaterThan(70);
+		Set<Movie> movies = library.getMoviesByAverageRating(70, true);
 		assertEquals(3, movies.size());
 		List<String> ids = movies.stream().map(m -> m.getId()).collect(Collectors.toList());
 		assertTrue(ids.contains("001"));
@@ -102,7 +102,7 @@ class TestMovieLibrary {
 	
 	@Test
 	void testMoviesWithAvgRatingGreaterThan90() throws Exception {
-		Set<Movie> movies = library.getMoviesWithAvgRatingGreaterThan(90);
+		Set<Movie> movies = library.getMoviesByAverageRating(90, true);
 		assertEquals(0, movies.size());
 	}
 	
